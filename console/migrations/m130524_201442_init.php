@@ -14,6 +14,7 @@ class m130524_201442_init extends Migration
 
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
+            'access_token' => $this->string()->notNull(),
             'username' => $this->string()->notNull()->unique(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
@@ -24,6 +25,30 @@ class m130524_201442_init extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->insert('{{%user}}', [
+            'access_token' => 'bd9615e2871c56dddd8b88b576f131f51c20f3bc',
+            'username' => 'admin',
+            'auth_key' => 'Zu-CaZt_y9lyoxHymnaC1CAKhFiLPuqP',
+            'password_hash' => '$2y$13$qiKJ/17Md7bfrngqqSQfdODWwr/yySSTv5pcCOPffFiXXXk6bW8su',
+            'password_reset_token' => null,
+            'email' => 'illyar80@gmail.com',
+            'status' => 10,
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+
+        $this->insert('{{%user}}', [
+            'access_token' => 'bd9615e2871c56dddd8b88b576f131f51c20f3bc',
+            'username' => 'admin2',
+            'auth_key' => 'Zu-CaZt_y9lyoxHymnaC1CAKhFiLPuqP',
+            'password_hash' => '$2y$13$qiKJ/17Md7bfrngqqSQfdODWwr/yySSTv5pcCOPffFiXXXk6bW8su',
+            'password_reset_token' => null,
+            'email' => 'illyar80@gmail.com',
+            'status' => 10,
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
     }
 
     public function down()
