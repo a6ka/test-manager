@@ -58,4 +58,23 @@ class Projects extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function fields()
+    {
+        if(Yii::$app->id == 'app-api') {
+            return [
+                'id',
+                'user_id',
+                'project_name',
+                'created_at',
+            ];
+        } else {
+            return [
+                'id',
+                'user_id',
+                'project_name',
+                'created_at',
+            ];
+        }
+    }
 }

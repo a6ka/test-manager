@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Projects;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +21,16 @@ class ProjectsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'view', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -36,7 +47,7 @@ class ProjectsController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Projects::find(),
+            'query' => Projects::find()->where(['user_id' => Yii::$app->user->identity->getId()]),
         ]);
 
         return $this->render('index', [
@@ -51,9 +62,14 @@ class ProjectsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        if($model->user_id === Yii::$app->user->identity->getId()) {
+            return $this->render('view', [
+                'model' => $model,
+            ]);
+        } else {
+            return $this->redirect(['index']);
+        }
     }
 
     /**
@@ -64,8 +80,11 @@ class ProjectsController extends Controller
     public function actionCreate()
     {
         $model = new Projects();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->user_id = Yii::$app->user->identity->getId();
+            $model->created_at = time();
+        }
+        if($model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -84,12 +103,16 @@ class ProjectsController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if($model->user_id === Yii::$app->user->identity->getId()) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['index']);
         }
     }
 
@@ -101,7 +124,11 @@ class ProjectsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if($model->user_id === Yii::$app->user->identity->getId()) {
+            $model->delete();
+        }
 
         return $this->redirect(['index']);
     }

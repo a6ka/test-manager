@@ -51,13 +51,11 @@ return [
                 [
                     'pluralize' => false,
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'models',
+                    'controller' => 'projects',
                     'tokens' => [
                         '{id}' => '<id:\\w+>',
-                        '{date}' => '<date:[0-9]{4}>',
                     ],
                     'except' => ['delete', 'create', 'update'],
-                    'extraPatterns' => ['GET by-date' => 'by-date-all', 'GET by-date/{date}' => 'by-date'],
                 ],
             ],
         ]

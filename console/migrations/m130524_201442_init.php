@@ -32,7 +32,7 @@ class m130524_201442_init extends Migration
             'auth_key' => 'Zu-CaZt_y9lyoxHymnaC1CAKhFiLPuqP',
             'password_hash' => '$2y$13$qiKJ/17Md7bfrngqqSQfdODWwr/yySSTv5pcCOPffFiXXXk6bW8su',
             'password_reset_token' => null,
-            'email' => 'illyar80@gmail.com',
+            'email' => 'a6ka666@gmail.com',
             'status' => 10,
             'created_at' => time(),
             'updated_at' => time(),

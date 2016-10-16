@@ -18,7 +18,8 @@
         "yiisoft/yii2": ">=2.0.6",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "nostop8/rest-api-doc": "^1.0"
+        "nostop8/rest-api-doc": "^1.0",
+        "FortAwesome/Font-Awesome": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

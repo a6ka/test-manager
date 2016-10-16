@@ -2,18 +2,19 @@
 
 namespace api\controllers;
 
+use common\models\Projects;
 use Yii;
-use common\models\Images;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
+use yii\web\NotFoundHttpException;
 
 /**
- * Photos Controller API
+ * Projects Controller API
  */
-class PhotosController extends ActiveController
+class ProjectsController extends ActiveController
 {
-    public $modelClass = 'common\models\Images';
+    public $modelClass = 'common\models\Projects';
 
     public function behaviors()
     {
@@ -28,22 +29,26 @@ class PhotosController extends ActiveController
 
     public function actions(){
         $actions = parent::actions();
-        unset($actions['index']);
+        unset($actions['index'], $actions['view']);
         return $actions;
     }
 
     public function actionIndex(){
         $activeData = new ActiveDataProvider([
-            'query' => Images::find()->where(['not', ['model_id' => null]]),
+            'query' => Projects::find(),
             'pagination' => false,
         ]);
         return $activeData;
     }
 
-    public function actionByModel($id){
-        $activeData = new ActiveDataProvider([
-            'query' => Images::find()->where(['model_id' => $id]),
-        ]);
-        return $activeData;
+    public function actionView($id)
+    {
+        $model = Projects::findOne($id);
+
+        if (isset($model)) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException("Object not found: $id");
+        }
     }
 }
